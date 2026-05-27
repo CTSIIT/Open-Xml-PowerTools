@@ -555,55 +555,49 @@ namespace OpenXmlPowerTools
         public static OpenXmlMemoryStreamDocument CreateWordprocessingDocument()
         {
             MemoryStream stream = new MemoryStream();
-            using (WordprocessingDocument doc = WordprocessingDocument.Create(stream, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
-            {
-                doc.AddMainDocumentPart();
-                doc.MainDocumentPart.PutXDocument(new XDocument(
-                    new XElement(W.document,
-                        new XAttribute(XNamespace.Xmlns + "w", W.w),
-                        new XAttribute(XNamespace.Xmlns + "r", R.r),
-                        new XElement(W.body))));
-                doc.Close();
-                return new OpenXmlMemoryStreamDocument(stream);
-            }
+            WordprocessingDocument doc = WordprocessingDocument.Create(stream, DocumentFormat.OpenXml.WordprocessingDocumentType.Document, autoSave: false);
+            doc.AddMainDocumentPart();
+            doc.MainDocumentPart.PutXDocument(new XDocument(
+                new XElement(W.document,
+                    new XAttribute(XNamespace.Xmlns + "w", W.w),
+                    new XAttribute(XNamespace.Xmlns + "r", R.r),
+                    new XElement(W.body))));
+            doc.Dispose();
+            return new OpenXmlMemoryStreamDocument(stream);
         }
         public static OpenXmlMemoryStreamDocument CreateSpreadsheetDocument()
         {
             MemoryStream stream = new MemoryStream();
-            using (SpreadsheetDocument doc = SpreadsheetDocument.Create(stream, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook))
-            {
-                doc.AddWorkbookPart();
-                XNamespace ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
-                XNamespace relationshipsns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
-                doc.WorkbookPart.PutXDocument(new XDocument(
-                    new XElement(ns + "workbook",
-                        new XAttribute("xmlns", ns),
-                        new XAttribute(XNamespace.Xmlns + "r", relationshipsns),
-                        new XElement(ns + "sheets"))));
-                doc.Close();
-                return new OpenXmlMemoryStreamDocument(stream);
-            }
+            SpreadsheetDocument doc = SpreadsheetDocument.Create(stream, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook, autoSave: false);
+            doc.AddWorkbookPart();
+            XNamespace ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+            XNamespace relationshipsns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+            doc.WorkbookPart.PutXDocument(new XDocument(
+                new XElement(ns + "workbook",
+                    new XAttribute("xmlns", ns),
+                    new XAttribute(XNamespace.Xmlns + "r", relationshipsns),
+                    new XElement(ns + "sheets"))));
+            doc.Dispose();
+            return new OpenXmlMemoryStreamDocument(stream);
         }
         public static OpenXmlMemoryStreamDocument CreatePresentationDocument()
         {
             MemoryStream stream = new MemoryStream();
-            using (PresentationDocument doc = PresentationDocument.Create(stream, DocumentFormat.OpenXml.PresentationDocumentType.Presentation))
-            {
-                doc.AddPresentationPart();
-                XNamespace ns = "http://schemas.openxmlformats.org/presentationml/2006/main";
-                XNamespace relationshipsns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
-                XNamespace drawingns = "http://schemas.openxmlformats.org/drawingml/2006/main";
-                doc.PresentationPart.PutXDocument(new XDocument(
-                    new XElement(ns + "presentation",
-                        new XAttribute(XNamespace.Xmlns + "a", drawingns),
-                        new XAttribute(XNamespace.Xmlns + "r", relationshipsns),
-                        new XAttribute(XNamespace.Xmlns + "p", ns),
-                        new XElement(ns + "sldMasterIdLst"),
-                        new XElement(ns + "sldIdLst"),
-                        new XElement(ns + "notesSz", new XAttribute("cx", "6858000"), new XAttribute("cy", "9144000")))));
-                doc.Close();
-                return new OpenXmlMemoryStreamDocument(stream);
-            }
+            PresentationDocument doc = PresentationDocument.Create(stream, DocumentFormat.OpenXml.PresentationDocumentType.Presentation, autoSave: false);
+            doc.AddPresentationPart();
+            XNamespace ns = "http://schemas.openxmlformats.org/presentationml/2006/main";
+            XNamespace relationshipsns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+            XNamespace drawingns = "http://schemas.openxmlformats.org/drawingml/2006/main";
+            doc.PresentationPart.PutXDocument(new XDocument(
+                new XElement(ns + "presentation",
+                    new XAttribute(XNamespace.Xmlns + "a", drawingns),
+                    new XAttribute(XNamespace.Xmlns + "r", relationshipsns),
+                    new XAttribute(XNamespace.Xmlns + "p", ns),
+                    new XElement(ns + "sldMasterIdLst"),
+                    new XElement(ns + "sldIdLst"),
+                    new XElement(ns + "notesSz", new XAttribute("cx", "6858000"), new XAttribute("cy", "9144000")))));
+            doc.Dispose();
+            return new OpenXmlMemoryStreamDocument(stream);
         }
 
         public static OpenXmlMemoryStreamDocument CreatePackage()
@@ -625,7 +619,7 @@ namespace OpenXmlPowerTools
             {
                 if (GetDocumentType() != typeof(WordprocessingDocument))
                     throw new PowerToolsDocumentException("Not a Wordprocessing document.");
-                return WordprocessingDocument.Open(DocPackage);
+                return WordprocessingDocument.Open(DocPackage, new OpenSettings() { AutoSave = false });
             }
             catch (Exception e)
             {
@@ -638,7 +632,7 @@ namespace OpenXmlPowerTools
             {
                 if (GetDocumentType() != typeof(SpreadsheetDocument))
                     throw new PowerToolsDocumentException("Not a Spreadsheet document.");
-                return SpreadsheetDocument.Open(DocPackage);
+                return SpreadsheetDocument.Open(DocPackage, new OpenSettings() { AutoSave = false });
             }
             catch (Exception e)
             {
@@ -652,7 +646,7 @@ namespace OpenXmlPowerTools
             {
                 if (GetDocumentType() != typeof(PresentationDocument))
                     throw new PowerToolsDocumentException("Not a Presentation document.");
-                return PresentationDocument.Open(DocPackage);
+                return PresentationDocument.Open(DocPackage, new OpenSettings() { AutoSave = false });
             }
             catch (Exception e)
             {

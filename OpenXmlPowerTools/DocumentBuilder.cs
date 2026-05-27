@@ -172,7 +172,9 @@ namespace OpenXmlPowerTools
                 using (WordprocessingDocument output = streamDoc.GetWordprocessingDocument())
                 {
                     BuildDocument(sources, output, new DocumentBuilderSettings());
-                    output.Close();
+                    // closed on Dispose.
+                    //output.Close();
+                    output.Dispose();
                 }
                 streamDoc.GetModifiedDocument().SaveAs(fileName);
             }
@@ -185,7 +187,9 @@ namespace OpenXmlPowerTools
                 using (WordprocessingDocument output = streamDoc.GetWordprocessingDocument())
                 {
                     BuildDocument(sources, output, settings);
-                    output.Close();
+                    // closed on Dispose.
+                    //output.Close();
+                    output.Dispose();
                 }
                 streamDoc.GetModifiedDocument().SaveAs(fileName);
             }
@@ -198,7 +202,9 @@ namespace OpenXmlPowerTools
                 using (WordprocessingDocument output = streamDoc.GetWordprocessingDocument())
                 {
                     BuildDocument(sources, output, new DocumentBuilderSettings());
-                    output.Close();
+                    // closed on Dispose.
+                    //output.Close();
+                    output.Dispose();
                 }
                 return streamDoc.GetModifiedWmlDocument();
             }
@@ -211,7 +217,9 @@ namespace OpenXmlPowerTools
                 using (WordprocessingDocument output = streamDoc.GetWordprocessingDocument())
                 {
                     BuildDocument(sources, output, settings);
-                    output.Close();
+                    // closed on Dispose.
+                    //output.Close();
+                    output.Dispose();
                 }
                 return streamDoc.GetModifiedWmlDocument();
             }
@@ -3113,15 +3121,15 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
             // part.  This is not necessary for parts such as the main document part, but this code won't malfunction
             // in that case.
             var tempPartIdPair5 = newContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-            if (tempPartIdPair5 != null)
+            if (tempPartIdPair5 != null && tempPartIdPair5.RelationshipId == relId)
                 return;
 
             ExternalRelationship tempEr5 = newContentPart.ExternalRelationships.FirstOrDefault(er => er.Id == relId);
-            if (tempEr5 != null)
+            if (tempEr5 != null && tempEr5.Id == relId)
                 return;
 
             var ipp2 = oldContentPart.Parts.FirstOrDefault(ipp => ipp.RelationshipId == relId);
-            if (ipp2 != null)
+            if (ipp2 != null && ipp2.RelationshipId == relId)
             {
                 var oldPart2 = ipp2.OpenXmlPart;
                 if (!(oldPart2 is ImagePart))
@@ -3218,14 +3226,14 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 // dm attribute
                 string relId = diagramReference.Attribute(R.dm).Value;
                 var ipp = newContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-                if (ipp != null)
+                if (ipp != null && ipp.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp.OpenXmlPart;
                     continue;
                 }
 
                 ExternalRelationship tempEr = newContentPart.ExternalRelationships.FirstOrDefault(er2 => er2.Id == relId);
-                if (tempEr != null)
+                if (tempEr != null && tempEr.Id == relId)
                     continue;
 
                 OpenXmlPart oldPart = oldContentPart.GetPartById(relId);
@@ -3238,7 +3246,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 // lo attribute
                 relId = diagramReference.Attribute(R.lo).Value;
                 var ipp2 = newContentPart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp2 != null)
+                if (ipp2 != null && ipp2.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp2.OpenXmlPart;
                     continue;
@@ -3259,7 +3267,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 // qs attribute
                 relId = diagramReference.Attribute(R.qs).Value;
                 var ipp5 = newContentPart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp5 != null)
+                if (ipp5 != null && ipp5.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp5.OpenXmlPart;
                     continue;
@@ -3279,7 +3287,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 // cs attribute
                 relId = diagramReference.Attribute(R.cs).Value;
                 var ipp6 = newContentPart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp6 != null)
+                if (ipp6 != null && ipp6.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp6.OpenXmlPart;
                     continue;
@@ -3306,18 +3314,18 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 // part.  This is not necessary for parts such as the main document part, but this code won't malfunction
                 // in that case.
                 var ipp1 = newContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-                if (ipp1 != null)
+                if (ipp1 != null && ipp1.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp1.OpenXmlPart;
                     continue;
                 }
 
                 ExternalRelationship tempEr1 = newContentPart.ExternalRelationships.FirstOrDefault(z => z.Id == relId);
-                if (tempEr1 != null)
+                if (tempEr1 != null && tempEr1.Id == relId)
                     continue;
 
                 var ipp4 = oldContentPart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp4 != null)
+                if (ipp4 != null && ipp4.RelationshipId == relId)
                 {
                     OpenXmlPart oldPart = oldContentPart.GetPartById(relId);
                     OpenXmlPart newPart = null;
@@ -3380,18 +3388,18 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 if (string.IsNullOrEmpty(relId))
                     continue;
                 var ipp2 = newContentPart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp2 != null)
+                if (ipp2 != null && ipp2.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp2.OpenXmlPart;
                     continue;
                 }
 
                 ExternalRelationship tempEr2 = newContentPart.ExternalRelationships.FirstOrDefault(z => z.Id == relId);
-                if (tempEr2 != null)
+                if (tempEr2 != null && tempEr2.Id == relId)
                     continue;
 
                 var ipp3 = oldContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-                if (ipp3 == null)
+                if (ipp3 == null || ipp3.RelationshipId != relId)
                     continue;
                 ChartPart oldPart = (ChartPart)ipp3.OpenXmlPart;
                 XDocument oldChart = oldPart.GetXDocument();
@@ -3410,7 +3418,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                     continue;
 
                 var ipp4 = newContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-                if (ipp4 != null)
+                if (ipp4 != null && ipp4.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp4.OpenXmlPart;
                     continue;
@@ -3421,7 +3429,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                     continue;
 
                 var ipp5 = oldContentPart.Parts.FirstOrDefault(p => p.RelationshipId == relId);
-                if (ipp5 != null)
+                if (ipp5 != null && ipp5.RelationshipId == relId)
                 {
                     ChartDrawingPart oldPart = (ChartDrawingPart)ipp5.OpenXmlPart;
                     XDocument oldXDoc = oldPart.GetXDocument();
@@ -3446,14 +3454,14 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                     continue;
 
                 var ipp1 = newFontTablePart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp1 != null)
+                if (ipp1 != null && ipp1.RelationshipId == relId)
                 {
                     OpenXmlPart tempPart = ipp1.OpenXmlPart;
                     continue;
                 }
 
                 ExternalRelationship tempEr1 = newFontTablePart.ExternalRelationships.FirstOrDefault(z => z.Id == relId);
-                if (tempEr1 != null)
+                if (tempEr1 != null && tempEr1.Id == relId)
                     continue;
 
                 var oldPart2 = oldFontTablePart.GetPartById(relId);
@@ -3482,7 +3490,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml
                 string relId = dataReference.Attribute(R.id).Value;
 
                 var ipp1 = oldChart.Parts.FirstOrDefault(z => z.RelationshipId == relId);
-                if (ipp1 != null)
+                if (ipp1 != null && ipp1.RelationshipId == relId)
                 {
                     var oldRelatedPart = ipp1.OpenXmlPart;
                     if (oldRelatedPart is EmbeddedPackagePart)
