@@ -381,8 +381,15 @@ namespace OpenXmlPowerTools
                             break;
                         case CellDataType.Date:
                             xw.WriteStartAttribute("t");
-                            xw.WriteValue("d");
+                            //xw.WriteValue("d");
+                            xw.WriteValue("n");
                             xw.WriteEndAttribute();
+                            if (cell.Value != null && cell.Value is DateTime)
+                            {
+                                DateTime dt = (DateTime)cell.Value;
+                                double oaDate = dt.ToOADate();
+                                cell.Value = oaDate;
+                            }
                             break;
                         case CellDataType.Number:
                             xw.WriteStartAttribute("t");
