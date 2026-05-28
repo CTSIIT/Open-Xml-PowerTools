@@ -281,6 +281,7 @@ namespace OpenXmlPowerTools
                         .Root
                         .Descendants()
                         .Where(d => d.Name == W.p || d.Name == W.tbl || d.Name == W.tr)
+                        .Where(d => d.Attribute(PtOpenXml.Unid) != null)
                         .ToDictionary(d => (string)d.Attribute(PtOpenXml.Unid));
 
                     var afterProcMainXDoc = wDocAfterProc
@@ -317,10 +318,11 @@ namespace OpenXmlPowerTools
             using (MemoryStream ms = new MemoryStream())
             {
                 ms.Write(source.DocumentByteArray, 0, source.DocumentByteArray.Length);
-                OpenSettings os = new OpenSettings();
-                os.MarkupCompatibilityProcessSettings = new MarkupCompatibilityProcessSettings(MarkupCompatibilityProcessMode.ProcessAllParts,
-                    DocumentFormat.OpenXml.FileFormatVersions.Office2007);
-                using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true, os))
+                //OpenSettings os = new OpenSettings();
+                //os.MarkupCompatibilityProcessSettings = new MarkupCompatibilityProcessSettings(MarkupCompatibilityProcessMode.ProcessAllParts,
+                //    DocumentFormat.OpenXml.FileFormatVersions.Office2007);
+                //using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true, os))
+                using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true))
                 {
                     var doc = wDoc.MainDocumentPart.RootElement;
                     if (wDoc.MainDocumentPart.FootnotesPart != null)
@@ -341,10 +343,11 @@ namespace OpenXmlPowerTools
             using (MemoryStream ms = new MemoryStream())
             {
                 ms.Write(source.DocumentByteArray, 0, source.DocumentByteArray.Length);
-                OpenSettings os = new OpenSettings();
-                os.MarkupCompatibilityProcessSettings = new MarkupCompatibilityProcessSettings(MarkupCompatibilityProcessMode.ProcessAllParts,
-                    DocumentFormat.OpenXml.FileFormatVersions.Office2007);
-                using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true, os))
+                //OpenSettings os = new OpenSettings();
+                //os.MarkupCompatibilityProcessSettings = new MarkupCompatibilityProcessSettings(MarkupCompatibilityProcessMode.ProcessAllParts,
+                //    DocumentFormat.OpenXml.FileFormatVersions.Office2007);
+                //using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true, os))
+                using (WordprocessingDocument wDoc = WordprocessingDocument.Open(ms, true))
                 {
                     TestForInvalidContent(wDoc);
                     RemoveExistingPowerToolsMarkup(wDoc);
@@ -370,6 +373,7 @@ namespace OpenXmlPowerTools
                     FillInEmptyFootnotesEndnotes(wDoc);
                     DetachExternalData(wDoc);
                 }
+                            
                 return new WmlDocument(source.FileName, ms.ToArray());
             }
         }
