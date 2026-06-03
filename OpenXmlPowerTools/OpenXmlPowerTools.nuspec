@@ -2,25 +2,24 @@
 <package >
   <metadata>
     <id>CTSI.OpenXmlPowerTools</id>
-    <version>1.1.0</version>
+    <version>4.8.0</version>
     <title>CTSI Fork of OpenXmlPowerTools</title>
     <authors>Brian Petersen; Rich Glass</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <description>CTSI Fork of OpenXmlPowerTools</description>
 	  <dependencies>
-		<group targetFramework=".NETFramework4.8.1">
+		<group targetFramework=".NETFramework4.8">
 		  <dependency id="DocumentFormat.OpenXml" version="3.5.1" />
-		  <dependency id="StyleCop.Analyzers" version="1.1.1" />
 	    </group>
 	  </dependencies>
 	  <readme>README.md</readme>
   </metadata>
 	<files>
 		<file src="..\README.md" target="" />		
-		<!-- .NET Framework 4.8.1 -->
-		<file src="bin\Release\net481\CTSI.OpenXmlPowerTools.dll" target="lib\net481" />
-		<file src="bin\Debug\net481\CTSI.OpenXmlPowerTools.pdb" target="lib\net481" />
+		<!-- .NET Framework 4.8 -->
+		<file src="bin\Release\net48\CTSI.OpenXmlPowerTools.dll" target="lib\net48" />
+		<file src="bin\Release\net48\CTSI.OpenXmlPowerTools.pdb" target="lib\net48" />
 		<!-- .NET Standard 2.0 -->
 		<!--<file src="bin\Debug\netstandard2.0\OpenXmlPowerTools.dll" target="lib\netstandard2.0" />
 		<file src="bin\Debug\netstandard2.0\OpenXmlPowerTools.pdb" target="lib\netstandard2.0" />-->
